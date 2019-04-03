@@ -1,16 +1,17 @@
 package main
 
-import (
-	"github.com/gin-gonic/gin"
-)
+import "fmt"
 
 func main() {
-	router := gin.Default()
-	router.GET("/ping", func(ctx *gin.Context) {
-		ctx.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
+	var value string
+	fmt.Scan(&value)
 
-	router.Run(":8083")
+	basePattern := map[string]string{
+		"A": "T",
+		"T": "A",
+		"G": "C",
+		"C": "G",
+	}
+
+	fmt.Println(basePattern[value])
 }
