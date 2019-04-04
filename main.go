@@ -1,36 +1,72 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
+	"strconv"
+	"strings"
 )
 
-func main() {
-	var value string
-	fmt.Scan(&value)
+func readLine() string {
+	scanner := bufio.NewScanner(os.Stdin)
+	scanner.Scan()
+	return strings.TrimSpace(scanner.Text())
+}
 
-	var count, maxLength int
-	var isMatched bool
+func readInt() (int, error) {
+	inputValue := readLine()
+	return strconv.Atoi(strings.TrimSpace(inputValue))
+}
 
-	targetChars := [4]string{"A", "T", "C", "G"}
+func explode(delimiter string, inputValue string) []string {
+	splittedValue := strings.Split(inputValue, delimiter)
 
-	for _, char := range value {
-		isMatched = false
-		for _, targetChar := range targetChars {
-			if targetChar == string(char) {
-				isMatched = true
-			}
-		}
+	var trimmedValues []string
 
-		if isMatched {
-			count++
-		} else {
-			count = 0
-		}
-
-		if count > maxLength {
-			maxLength = count
+	for _, value := range splittedValue {
+		if value != "" {
+			trimmedValues = append(trimmedValues, value)
 		}
 	}
 
-	fmt.Println(maxLength)
+	return trimmedValues
+}
+
+func explodeString(delimiter string) []string {
+	inputValue := readLine()
+	return explode(delimiter, inputValue)
+}
+
+func explodeInt(delimiter string) []int {
+	inputStrings := explodeString(" ")
+
+	var splittedInts []int
+
+	for _, inputString := range inputStrings {
+		var (
+			intValue int
+			err      error
+		)
+		intValue, err = strconv.Atoi(inputString)
+
+		if err != nil {
+			panic(err)
+		}
+		splittedInts = append(splittedInts, intValue)
+	}
+
+	return splittedInts
+}
+
+func main() {
+	s := readLine()
+	i, err := readInt()
+	sa := explodeString(" ")
+	ia := explodeInt(" ")
+
+	fmt.Println(s)
+	fmt.Println(i, err)
+	fmt.Println(sa)
+	fmt.Println(ia)
 }
