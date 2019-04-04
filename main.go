@@ -19,7 +19,7 @@ func readInt() (int, error) {
 	return strconv.Atoi(strings.TrimSpace(inputValue))
 }
 
-func explode(delimiter string, inputValue string) []string {
+func explodeString(delimiter string, inputValue string) []string {
 	splittedValue := strings.Split(inputValue, delimiter)
 
 	var trimmedValues []string
@@ -33,13 +33,8 @@ func explode(delimiter string, inputValue string) []string {
 	return trimmedValues
 }
 
-func explodeString(delimiter string) []string {
-	inputValue := readLine()
-	return explode(delimiter, inputValue)
-}
-
-func explodeInt(delimiter string) []int {
-	inputStrings := explodeString(" ")
+func explodeInt(delimiter string, inputValue string) []int {
+	inputStrings := explodeString(" ", inputValue)
 
 	var splittedInts []int
 
@@ -62,8 +57,8 @@ func explodeInt(delimiter string) []int {
 func main() {
 	s := readLine()
 	i, err := readInt()
-	sa := explodeString(" ")
-	ia := explodeInt(" ")
+	sa := explodeString(" ", readLine())
+	ia := explodeInt(" ", readLine())
 
 	fmt.Println(s)
 	fmt.Println(i, err)
