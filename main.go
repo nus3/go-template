@@ -55,13 +55,29 @@ func explodeInt(delimiter string, inputValue string) []int {
 }
 
 func main() {
-	s := readLine()
-	i, err := readInt()
-	sa := explodeString(" ", readLine())
-	ia := explodeInt(" ", readLine())
+	var (
+		n, m, c, outputValue int
+		bValues              []int
+	)
 
-	fmt.Println(s)
-	fmt.Println(i, err)
-	fmt.Println(sa)
-	fmt.Println(ia)
+	nmc := explodeInt(" ", readLine())
+
+	n, m, c = nmc[0], nmc[1], nmc[2]
+
+	bValues = explodeInt(" ", readLine())
+
+	for i := 0; i < n; i++ {
+		aValues := explodeInt(" ", readLine())
+
+		sum := c
+		for mIndex := 0; mIndex < m; mIndex++ {
+			sum += bValues[mIndex] * aValues[mIndex]
+		}
+
+		if sum > 0 {
+			outputValue++
+		}
+	}
+
+	fmt.Println(outputValue)
 }
