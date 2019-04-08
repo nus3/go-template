@@ -8,15 +8,9 @@ import (
 	"strings"
 )
 
-func readLine() string {
-	scanner := bufio.NewScanner(os.Stdin)
-	scanner.Scan()
-	return strings.TrimSpace(scanner.Text())
-}
-
-func readInt() (int, error) {
-	inputValue := readLine()
-	return strconv.Atoi(strings.TrimSpace(inputValue))
+func readLine(sc *bufio.Scanner) string {
+	sc.Scan()
+	return strings.TrimSpace(sc.Text())
 }
 
 func explodeString(delimiter string, inputValue string) []string {
@@ -60,21 +54,22 @@ func main() {
 		bValues              []int
 	)
 
-	nmc := explodeInt(" ", readLine())
+	sc := bufio.NewScanner(os.Stdin)
 
+	nmc := explodeInt(" ", readLine(sc))
 	n, m, c = nmc[0], nmc[1], nmc[2]
 
-	bValues = explodeInt(" ", readLine())
+	bValues = explodeInt(" ", readLine(sc))
 
 	for i := 0; i < n; i++ {
-		aValues := explodeInt(" ", readLine())
+		aValues := explodeInt(" ", readLine(sc))
 
-		sum := c
-		for mIndex := 0; mIndex < m; mIndex++ {
-			sum += bValues[mIndex] * aValues[mIndex]
+		sum := 0
+		for j := 0; j < m; j++ {
+			sum += bValues[j] * aValues[j]
 		}
 
-		if sum > 0 {
+		if sum+c > 0 {
 			outputValue++
 		}
 	}
