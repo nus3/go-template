@@ -8,9 +8,57 @@ import (
 	"strings"
 )
 
+func main() {
+	sc := bufio.NewScanner(os.Stdin)
+
+	var cookingTimes []int
+
+	lastCookingTimeIndex := 0
+	lastCookingTimeMod := 10
+
+	for i := 0; i < 5; i++ {
+		inputInt := readLineToInt(sc)
+		cookingTimes = append(cookingTimes, inputInt)
+
+		modInt := inputInt % 10
+		if modInt != 0 && modInt < lastCookingTimeMod {
+			lastCookingTimeMod = modInt
+			lastCookingTimeIndex = i
+		}
+	}
+
+	outputValue := 0
+	for i, cookingTime := range cookingTimes {
+		if i == lastCookingTimeIndex {
+			continue
+		}
+
+		if cookingTime%10 == 0 {
+			outputValue += cookingTime
+		} else {
+			outputValue += cookingTime + 10 - cookingTime%10
+		}
+	}
+
+	outputValue += cookingTimes[lastCookingTimeIndex]
+
+	fmt.Println(outputValue)
+}
+
+// helper
+
 func readLine(sc *bufio.Scanner) string {
 	sc.Scan()
 	return strings.TrimSpace(sc.Text())
+}
+
+func readLineToInt(sc *bufio.Scanner) int {
+	intValue, err := strconv.Atoi(readLine(sc))
+	if err != nil {
+		panic(err)
+	}
+
+	return intValue
 }
 
 func explodeString(delimiter string, inputValue string) []string {
@@ -46,33 +94,4 @@ func explodeInt(delimiter string, inputValue string) []int {
 	}
 
 	return splittedInts
-}
-
-func main() {
-	var (
-		n, m, c, outputValue int
-		bValues              []int
-	)
-
-	sc := bufio.NewScanner(os.Stdin)
-
-	nmc := explodeInt(" ", readLine(sc))
-	n, m, c = nmc[0], nmc[1], nmc[2]
-
-	bValues = explodeInt(" ", readLine(sc))
-
-	for i := 0; i < n; i++ {
-		aValues := explodeInt(" ", readLine(sc))
-
-		sum := 0
-		for j := 0; j < m; j++ {
-			sum += bValues[j] * aValues[j]
-		}
-
-		if sum+c > 0 {
-			outputValue++
-		}
-	}
-
-	fmt.Println(outputValue)
 }
