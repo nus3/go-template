@@ -11,36 +11,25 @@ import (
 func main() {
 	sc := bufio.NewScanner(os.Stdin)
 
-	var cookingTimes []int
+	giftMoneyCount := readLineToInt(sc)
 
-	lastCookingTimeIndex := 0
-	lastCookingTimeMod := 10
+	outputValue := 0.0
 
-	for i := 0; i < 5; i++ {
-		inputInt := readLineToInt(sc)
-		cookingTimes = append(cookingTimes, inputInt)
+	for index := 0; index < giftMoneyCount; index++ {
+		inputValues := explodeString(" ", readLine(sc))
 
-		modInt := inputInt % 10
-		if modInt != 0 && modInt < lastCookingTimeMod {
-			lastCookingTimeMod = modInt
-			lastCookingTimeIndex = i
+		inputMoney, err := strconv.ParseFloat(inputValues[0], 64)
+		if err != nil {
+			panic(err)
 		}
-	}
+		inputCurrency := inputValues[1]
 
-	outputValue := 0
-	for i, cookingTime := range cookingTimes {
-		if i == lastCookingTimeIndex {
-			continue
-		}
-
-		if cookingTime%10 == 0 {
-			outputValue += cookingTime
+		if inputCurrency == "BTC" {
+			outputValue += inputMoney * 380000.0
 		} else {
-			outputValue += cookingTime + 10 - cookingTime%10
+			outputValue += inputMoney
 		}
 	}
-
-	outputValue += cookingTimes[lastCookingTimeIndex]
 
 	fmt.Println(outputValue)
 }
