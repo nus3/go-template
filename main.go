@@ -11,23 +11,20 @@ import (
 func main() {
 	sc := bufio.NewScanner(os.Stdin)
 
-	giftMoneyCount := readLineToInt(sc)
+	inputInts := explodeInt(" ", readLine(sc))
 
-	outputValue := 0.0
+	aButton := inputInts[0]
+	bButton := inputInts[1]
 
-	for index := 0; index < giftMoneyCount; index++ {
-		inputValues := explodeString(" ", readLine(sc))
+	var outputValue int
 
-		inputMoney, err := strconv.ParseFloat(inputValues[0], 64)
-		if err != nil {
-			panic(err)
-		}
-		inputCurrency := inputValues[1]
-
-		if inputCurrency == "BTC" {
-			outputValue += inputMoney * 380000.0
+	for index := 0; index < 2; index++ {
+		if aButton >= bButton {
+			outputValue += aButton
+			aButton += -1
 		} else {
-			outputValue += inputMoney
+			outputValue += bButton
+			bButton += -1
 		}
 	}
 
