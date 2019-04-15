@@ -11,20 +11,20 @@ import (
 func main() {
 	sc := bufio.NewScanner(os.Stdin)
 
-	inputInts := explodeInt(" ", readLine(sc))
+	nInt := readLineToInt(sc)
+	hInts := explodeInt(" ", readLine(sc))
 
-	aButton := inputInts[0]
-	bButton := inputInts[1]
+	var outputValue, maxHeight int
 
-	var outputValue int
-
-	for index := 0; index < 2; index++ {
-		if aButton >= bButton {
-			outputValue += aButton
-			aButton += -1
+	for index := 0; index < nInt; index++ {
+		if index == 0 {
+			outputValue++
+			maxHeight = hInts[index]
 		} else {
-			outputValue += bButton
-			bButton += -1
+			if hInts[index] >= maxHeight {
+				outputValue++
+				maxHeight = hInts[index]
+			}
 		}
 	}
 
