@@ -10,21 +10,30 @@ import (
 
 func main() {
 	sc := bufio.NewScanner(os.Stdin)
+	buf := make([]byte, 10000)
+	sc.Buffer(buf, 100000+1024)
 
-	nInt := readLineToInt(sc)
-	hInts := explodeInt(" ", readLine(sc))
+	s := readLine(sc)
+	sInts := strings.Split(s, "")
 
-	var outputValue, maxHeight int
+	outputValue := 0
+	var tileColorNumber string
 
-	for index := 0; index < nInt; index++ {
+	for index, sInt := range sInts {
 		if index == 0 {
+			tileColorNumber = sInt
+			continue
+		}
+
+		if tileColorNumber == sInt {
 			outputValue++
-			maxHeight = hInts[index]
-		} else {
-			if hInts[index] >= maxHeight {
-				outputValue++
-				maxHeight = hInts[index]
+			if tileColorNumber == "0" {
+				tileColorNumber = "1"
+			} else {
+				tileColorNumber = "0"
 			}
+		} else {
+			tileColorNumber = sInt
 		}
 	}
 
