@@ -13,27 +13,17 @@ func main() {
 	buf := make([]byte, 10000)
 	sc.Buffer(buf, 100000+1024)
 
-	s := readLine(sc)
-	sInts := strings.Split(s, "")
+	n := readLineToInt(sc)
+	vValues := explodeInt(" ", readLine(sc))
+	cValues := explodeInt(" ", readLine(sc))
 
 	outputValue := 0
-	var tileColorNumber string
 
-	for index, sInt := range sInts {
-		if index == 0 {
-			tileColorNumber = sInt
-			continue
-		}
+	for index := 0; index < n; index++ {
+		vcValue := vValues[index] - cValues[index]
 
-		if tileColorNumber == sInt {
-			outputValue++
-			if tileColorNumber == "0" {
-				tileColorNumber = "1"
-			} else {
-				tileColorNumber = "0"
-			}
-		} else {
-			tileColorNumber = sInt
+		if vcValue > 0 {
+			outputValue += vcValue
 		}
 	}
 
