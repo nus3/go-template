@@ -3,32 +3,107 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"os"
 	"strconv"
 	"strings"
 )
 
-func main() {
-	sc := bufio.NewScanner(os.Stdin)
-	buf := make([]byte, 10000)
-	sc.Buffer(buf, 100000+1024)
-
-	n := readLineToInt(sc)
-	vValues := explodeInt(" ", readLine(sc))
-	cValues := explodeInt(" ", readLine(sc))
-
-	outputValue := 0
-
-	for index := 0; index < n; index++ {
-		vcValue := vValues[index] - cValues[index]
-
-		if vcValue > 0 {
-			outputValue += vcValue
-		}
-	}
-
-	fmt.Println(outputValue)
+type AbstractFactory interface {
+	GetSoup() SoupFactory
+	GetMain() MainFactory
+	GetVegetables() VegetablesFactory
+	GetOtherIngredients() OtherIngredientsFactory
 }
+
+type SoupFactory struct {
+	name string
+}
+
+type MainFactory struct {
+	name string
+}
+
+type VegetablesFactory struct {
+	vegetables []string
+}
+
+type OtherIngredientsFactory struct {
+	otheringredients []string
+}
+
+type MizutakiFactory struct{}
+
+func (MizutakiFactory) GetSoup() SoupFactory {
+	return SoupFactory{"昆布だし"}
+}
+
+func (MizutakiFactory) GetMain() MainFactory {
+	return MainFactory{"鶏肉"}
+}
+
+func (MizutakiFactory) GetVegetables() VegetablesFactory {
+	return VegetablesFactory{[]string{"ねぎ", "白菜", "大根"}}
+}
+
+func (MizutakiFactory) GetOtherIngredients() OtherIngredientsFactory {
+	return OtherIngredientsFactory{[]string{"豆腐", "こんにゃく"}}
+}
+
+type HotPotFactroy struct{}
+
+// Create returns HotPot instance.
+func (*HotPotFactroy) Create(kind string) AbstractFactory {
+	switch kind {
+	case "水炊き":
+		return MizutakiFactory{}
+	default:
+		return MizutakiFactory{}
+	}
+}
+
+func main() {
+	factory := &HotPotFactroy{}
+	hotpot := factory.Create("水炊き")
+
+	// TODO: 明日中身がないのを中身があるようにする
+	fmt.Println(hotpot)
+}
+
+// TODO: これはこれで保存しとく
+// // Animal is an interface of cry of animal
+// type Animal interface {
+// 	Sing() string
+// }
+
+// // Cat is one kind of animal.
+// type Cat struct{}
+
+// // Sing returns the voice of animal.
+// func (Cat) Sing() string {
+// 	return "にゃんにゃん"
+// }
+
+// // Dog is one kind of animal.
+// type Dog struct{}
+
+// // Sing returns the voice of animal.
+// func (Dog) Sing() string {
+// 	return "バウバウ"
+// }
+
+// // AnimalFactory is factory to create instance.
+// type AnimalFactory struct{}
+
+// // Create returns Animal instance.
+// func (*AnimalFactory) Create(kind string) Animal {
+// 	switch kind {
+// 	case "dog":
+// 		return Dog{}
+// 	case "cat":
+// 		return Cat{}
+// 	default:
+// 		return Dog{}
+// 	}
+// }
 
 // helper
 
