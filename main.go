@@ -7,6 +7,7 @@ import (
 	"strings"
 )
 
+// TODO: SoupFactoryをSoupに変更する
 type AbstractFactory interface {
 	GetSoup() SoupFactory
 	GetMain() MainFactory
@@ -60,12 +61,40 @@ func (*HotPotFactroy) Create(kind string) AbstractFactory {
 	}
 }
 
+type HotPot struct {
+	soup             SoupFactory
+	main             MainFactory
+	vegetables       VegetablesFactory
+	otherIngredients OtherIngredientsFactory
+}
+
+// TODO: addに渡す引数はSoup構造体のみにする
+func (h *HotPot) addSoup(a AbstractFactory) {
+	h.soup = a.GetSoup()
+}
+
+func (h *HotPot) addMain(a AbstractFactory) {
+	h.main = a.GetMain()
+}
+
+func (h *HotPot) addVegetables(a AbstractFactory) {
+	h.vegetables = a.GetVegetables()
+}
+
+func (h *HotPot) addOtherIngredients(a AbstractFactory) {
+	h.otherIngredients = a.GetOtherIngredients()
+}
+
 func main() {
 	factory := &HotPotFactroy{}
-	hotpot := factory.Create("水炊き")
+	hotpotFactory := factory.Create("水炊き")
+	hotpot := &HotPot{}
+	hotpot.addSoup(hotpotFactory)
+	hotpot.addMain(hotpotFactory)
+	hotpot.addVegetables(hotpotFactory)
+	hotpot.addOtherIngredients(hotpotFactory)
 
-	// TODO: 明日中身がないのを中身があるようにする
-	fmt.Println(hotpot)
+	fmt.Println(*hotpot)
 }
 
 // TODO: これはこれで保存しとく
