@@ -31,6 +31,8 @@ func (n *NumberGenerator) AddObserver(o *Observer) {
 	n.observers = append(n.observers, o)
 }
 
+// TODO: observer
+
 // NotifyObservers returns
 func (n *NumberGenerator) NotifyObservers() {
 	for _, observer := range n.observers {
@@ -55,15 +57,15 @@ func (n *NumberGenerator) Execute() {
 type DegitObserver struct{}
 
 // Update returns
-func (d DegitObserver) Update(g *Generator) {
-	fmt.Println(g.GetNumber())
+func (d DegitObserver) Update(n *NumberGenerator) {
+	fmt.Println(n.GetNumber())
 }
 
 // GraphObserver is
 type GraphObserver struct{}
 
 // Update returns
-func (gr GraphObserver) Update(n *Generator) {
+func (gr GraphObserver) Update(n *NumberGenerator) {
 	count := n.GetNumber()
 	output := ""
 
@@ -76,8 +78,8 @@ func (gr GraphObserver) Update(n *Generator) {
 
 func main() {
 	generator := &NumberGenerator{}
-	var d Observer = DegitObserver{}
-	var g Observer = GraphObserver{}
+	var d Observer = &DegitObserver{}
+	var g Observer = &GraphObserver{}
 
 	generator.AddObserver(d)
 	generator.AddObserver(g)
